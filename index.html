@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<title>game</title>
+	<style>
+	*{margin:0;padding:0;list-style: none;}
+	div,ul,li{
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		box-sizing: border-box;
+	}
+	body{width: 100%;background: grey}
+	.contain{
+		width: 100%;
+		max-width: 640px;
+		margin:0 auto;
+		text-align: center;
+		font-size: 60px;
+		font-weight: bold;
+	}
+	.box{
+		width: 100%;
+	}
+	#time{
+		position: fixed;
+		bottom: 0;
+		left: 20%;
+		font-size: 40px;
+		color: red;
+	}
+	#record{
+		font-size: 30px;
+	}
+	.box li{float: left;border:1px solid black;}
+	#start{font-size: 60px;text-align: center;cursor: pointer;background: red;}
+	ul{overflow: hidden;}
+	</style>
+	<script src="jquery-1.11.3.js"></script>
+</head>
+<body>
+
+	<p id="record">0</p>
+	<p id="time"></p>
+	<div class="contain">
+		<!-- <p id="start">start</p> -->
+	</div>
+	<script>
+
+	</script>
+</body>
+</html>
