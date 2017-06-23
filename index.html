@@ -14,7 +14,7 @@
 	body{width: 100%;background: grey}
 	.contain{
 		width: 100%;
-		max-width: 640px;
+		max-width: 960px;
 		margin:0 auto;
 		text-align: center;
 		font-size: 60px;
@@ -24,29 +24,173 @@
 		width: 100%;
 	}
 	#time{
-		position: fixed;
-		bottom: 0;
-		left: 20%;
 		font-size: 40px;
 		color: red;
 	}
-	#record{
+	#time:before{
+		content: "Time left:"
+	}
+	#record,#time{
 		font-size: 30px;
+		width: 100%;
+		max-width: 960px;
+		margin: 0 auto;
+	}
+	#record:before{
+		content: "Level:"
+	}
+	#wrong{
+		font-size: 30px;
+		color: green;
+		width: 100%;
+		max-width: 960px;
+		margin: 0 auto;
+	}
+	#wrong:before{
+		content: "Wrong times:"
 	}
 	.box li{float: left;border:1px solid black;}
 	#start{font-size: 60px;text-align: center;cursor: pointer;background: red;}
 	ul{overflow: hidden;}
+
 	</style>
 	<script src="jquery-1.11.3.js"></script>
 </head>
 <body>
 
 	<p id="record">0</p>
-	<p id="time"></p>
+	<p id="time">20</p>
+	<p id="wrong">0</p>
 	<div class="contain">
-		<!-- <p id="start">start</p> -->
+		
 	</div>
 	<script>
+		var COUNT = 2;
+		var cut = 0;
+		var wrong = 0;
+		time = 20;
+		
+
+
+		appendLi(COUNT*COUNT);
+
+
+
+		var timer = setInterval(function(){
+			time--;
+			$("#time").text(time);
+			if (time<=0) {
+				clearInterval(timer);
+				timer = null;
+				$(".box").remove();
+				$(".contain").append("<img src='1.gif'>");
+			}
+		},1000)
+		initColor($('.box li'));
+	
+		
+		
+		
+		//画 方格 
+		function appendLi(num){
+			var oUl = $("<ul class='box'></ul>");
+				for (var i = 0; i < (num); i++) {
+					oUl.append('<li class='+i+'></li>');
+				}
+				$('.contain').append(oUl);
+				Size($(".box li"));
+		}
+		//定 方格大小
+		function Size(obj){
+			var len = $(".contain").width()/COUNT;
+			obj.css({
+				'width':''+len+'px',
+				'height':''+len+'px'
+			})
+		}
+
+		
+		// 设置 颜色
+		function Color(){
+			var colorArr = [];
+			var arr = [];
+			for (var i = 0; i < 3; i++) {
+				arr.push(Math.floor(Math.random()*255));
+			}
+			console.log(arr);
+			var norm_color = arr.join(',');
+			colorArr.push(norm_color);
+			var n = arr[0];
+			arr[0] = n>20?n-20:n+20;
+			var luck_color = arr.join(',');
+			// console.log(arr);
+			colorArr.push(luck_color);
+			
+			return colorArr;
+		}
+
+		// 着色
+		function initColor(obj){
+			var len = obj.length;
+			//console.log(len)
+			var luck = parseInt(Math.random()*len);
+			// console.log(luck);
+			obj.eq(luck).addClass('spe');
+			var c = Color();
+			obj.each(function(index,data){
+				if (index == luck) {
+					//console.log(data);
+					data.style.backgroundColor = 'rgb('+c[1]+')';
+				}else{
+					data.style.backgroundColor = 'rgb('+c[0]+')';
+				}
+			})
+		}
+		
+		// 设置 答对后的事件
+		function next(){
+			clearInterval(timer);
+			timer = null;
+			COUNT++;
+			cut++;
+			$("#record").text(cut);
+			$(".box").remove();
+			appendLi(COUNT*COUNT);
+			initColor($('.box li'));
+			time = 20;
+			timer = setInterval(function(){
+				time--;
+				$("#time").text(time);
+				if (time<=0) {
+					clearInterval(timer);
+					timer = null;
+					time = 20;
+					$(".box").remove();
+					$(".contain").append("<img src='1.gif'>");
+				}
+			},1000)
+			$(".box .spe").on('click',next);
+			// console.log($(".box li:not('.spe')"));
+			$(".box li").not('.spe').on('click',test);
+		}
+
+		// 设置 答错的事件  不能设置wrong 重复命名
+		
+		function test(){
+			wrong++;
+			console.log('wrond');
+			$("#wrong").text(wrong)
+		}
+
+		$(".box li:not('.spe')").bind('click',test);
+
+
+
+		// $(".box .spe").bind('click',next);
+		$(".box .spe").on('click',next);
+		
+
+
 
 	</script>
 </body>
